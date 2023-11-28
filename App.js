@@ -1,96 +1,60 @@
-import React, {useState} from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { Button, FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import Post from './components/Post';
 
 export default function App() {
-    const [userName, setUserName] = useState('');
-    const [userSecondName, setUserSecondName] = useState('');
-    const [userList, setUserList] = useState([]);
-    const addUser = () => {
-        if (userName && userSecondName) {
-            const newUser = {
-                id: Date.now(),
-                userName: userName,
-                userSecondName: userSecondName,
-            
-            }
-            setUserList([...userList, newUser]);
-        }
-        setUserName('');
-        setUserSecondName('');
-    }
+    const [posts, setPosts] = useState([]);
 
-    const clearInput = () => {
-        setUserName('');
-        setUserSecondName('');
-    }
+    let url = 'https://655baee0ab37729791a97996.mockapi.io/api/posts';
+
+    useEffect(() => {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => setPosts(data))
+    }, [])
 
     return (
-        <View style={styles.container}>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={newText => setUserName(newText)}
-                    placeholder='First name'
-                    defaultValue={userName}
-                    />
-                <TextInput
-                    style={styles.input}
-                    onChangeText={newText => setUserSecondName(newText)}
-                    placeholder='Second name'
-                    defaultValue={userSecondName}
-                    />
-                
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button 
-                    title='Clear'
-                    onPress={clearInput}
-                    />
-                <Button 
-                    title='Add user'
-                    onPress={addUser}
-                    />
-            </View>
-            <View style={styles.userList}>
+        <SafeAreaView style={{flex: 1}}>
+            <ScrollView style={styles.container}>
                     <FlatList
-                        keyExtractor={(item) => item.id}
-                        data={userList}
-                        renderItem={({ item }) => 
-                            <Text>{item.userName} {item.userSecondName}</Text>
-                        }
-                    />
-            </View>
+                            style={styles.postList}
+                            keyExtractor={(item) => item.id}
+                            data={posts}
+                            renderItem={({ item }) => 
+                                <Post
+                                    style={styles.post}
+                                    avatar={item.avatar}
+                                    title={item.title}
+                                    decription={item.description}
+                                />
+                            }
+                        />
+            </ScrollView>
+        </SafeAreaView>
+        
 
-        </View>
+
+
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
+        paddingRight: 10,
+        paddingLeft: 10,
+        paddingBottom: 50,
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
         rowGap: 5,
+        width: '100%',
+        height: '90%'
     },
-    inputContainer: {
-        flexDirection: 'column',
-        width: '90%',
-        rowGap: 10,
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 20,
-        padding: 5,
-
-
-    },
-    buttonContainer: {
+    postList: {
         flexDirection: 'row',
-        columnGap: 5,
-    },
-    userList: {
-        height: '70%'
+        flexWrap: 'wrap',
+        flex: 1,
+        width: '100%',
     }
 });
