@@ -14,23 +14,15 @@ export default function App() {
     }, [])
 
     return (
-        <SafeAreaView style={{flex: 1}}>
-            <ScrollView style={styles.container}>
-                    <FlatList
-                            style={styles.postList}
-                            keyExtractor={(item) => item.id}
-                            data={posts}
-                            renderItem={({ item }) => 
-                                <Post
-                                    style={styles.post}
-                                    avatar={item.avatar}
-                                    title={item.title}
-                                    decription={item.description}
-                                />
-                            }
-                        />
+        <View>
+            <ScrollView>
+                <View style={styles.postList}>
+                    {posts.map((item, index) =>
+                        <Post key={index} title={item.title} description={item.description} avatar={item.avatar} />
+                    )}
+                </View>
             </ScrollView>
-        </SafeAreaView>
+        </View>
         
 
 
@@ -47,7 +39,7 @@ const styles = StyleSheet.create({
         paddingBottom: 50,
         flex: 1,
         backgroundColor: '#fff',
-        rowGap: 5,
+
         width: '100%',
         height: '90%'
     },
@@ -56,5 +48,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         flex: 1,
         width: '100%',
+        rowGap: 5,
+        columnGap: 5,
+        justifyContent: 'center',
     }
 });
