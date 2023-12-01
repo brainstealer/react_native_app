@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet, TouchableHighlight } from 'react-native';
 
-const Post = ({title, avatar, description}) => {
-    const popUp = () =>  alert(title)
+const Post = ({title, avatar, description, navigation}) => {
+    
 
     return (
-        <TouchableHighlight onPress={popUp}>
+        
             <View style={styles.postContainer}>
                 <Image
                     style={styles.image}
@@ -15,7 +15,6 @@ const Post = ({title, avatar, description}) => {
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.description}>{description}</Text>
             </View>
-        </TouchableHighlight>
 
     )
 }
@@ -41,7 +40,7 @@ const styles = StyleSheet.create({
     description: {
         textAlign: 'center',
         width: 'auto',
-        fontSize: 18
+        fontSize: 18,
     }
 })
 
